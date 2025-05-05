@@ -8,8 +8,7 @@
 /**************************************************************/
 const COL_C = 'white';	    // These two const are part of the coloured 	
 const COL_B = '#CD7F32';	//  console.log for functions scheme
-console.log('%c fb_io.mjs',
-            'color: blue; background-color: white;');
+console.log('%c fb_io.mjs', 'color: blue; background-color: white;');
 
 /**************************************************************/
 // Import all external constants & functions required
@@ -21,11 +20,11 @@ console.log('%c fb_io.mjs',
 // EXPORT FUNCTIONS
 // List all the functions called by code or html outside of this module
 /**************************************************************/
-export { fb_initialise };
-export { fb_authenticate };
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import {  getDatabase  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { initializeApp }        from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getDatabase }          from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
     
 // fb_initialise()
@@ -52,29 +51,58 @@ function fb_initialise() {
 }
 
 
-
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-
 function fb_authenticate() {
     const AUTH = getAuth();
     const PROVIDER = new GoogleAuthProvider();
-
+    
     // The following makes Google ask the user to select the account
     PROVIDER.setCustomParameters({
         prompt: 'select_account'
     });
-
+    
     signInWithPopup(AUTH, PROVIDER).then((result) => {
-        console.log('success!');
+        console.log('success');
         console.log(result);
     })
-
+    
     .catch((error) => {
         console.log('error!');
         console.log(error);
     });
 }
 
-/**************************************************************/
+function fb_authChanged() {
+    const AUTH = getAuth();
+
+    onAuthStateChanged(AUTH, (user) => {
+        if (user) {
+            console.log(user + ' logged in');
+        } else {
+            console.log('log out');
+        }
+    }, (error) => {
+        console.log('error!');
+        console.log(error);
+    });
+}
+
+function fb_logout() {
+    const AUTH = getAuth();
+
+    signOut(AUTH).then(() => {
+        console.log('successful logout');
+    })
+
+    .catch((error) => {
+        print('error in loging out');
+        print(error);
+    });
+}
+
+
+
+export { fb_initialise, fb_authenticate, fb_authChanged, fb_logout };
+
+/*************************************************************/
 // END OF CODE
 /**************************************************************/
