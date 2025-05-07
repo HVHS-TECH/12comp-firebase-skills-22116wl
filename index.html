@@ -31,10 +31,10 @@
             </div>
 
             <div class="column">
-                <button onclick="fb_write()">t07: write record</button>
-                <button onclick="fb_read()">t08: read record</button>
+                <button onclick='fb_write("Products/Fruits/Apple", {Price: (Math.ceil(Math.random() * 100)), Colour: "Red", Quantity: (Math.ceil(Math.random() * 100))} )'>t07: write record</button>
+                <button onclick='fb_read("Products/Fruits/Apple")'>t08: read record</button>
                 <button onclick="">t09: read all</button>
-                <button onclick="">t10: update record</button>
+                <button onclick='fb_update("Products/Fruits/Apple", {Quantity: 9987})'>t10: update record</button>
             </div>
 
             <div class="column">

@@ -26,7 +26,7 @@ import { getDatabase }          from "https://www.gstatic.com/firebasejs/9.6.1/f
 
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-import { set, get, ref } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { set, get, ref, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
     
 // fb_initialise()
@@ -35,12 +35,12 @@ import { set, get, ref } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 // Input:  n/a
 // Return: n/a
 
-var fb_gameConfig = {};
+var fb_db;
 
 function fb_initialise() {
     console.log('%c fb_initialise(): ', 'color: ' + COL_C + '; background-color: ' + COL_B + ';');
 
-    fb_gameConfig = {
+    const FB_GAMECONFIG = {
         apiKey: "AIzaSyCwPcoDMGchHrJSuN_CWiQciiIJcnhYJVE",
         authDomain: "comp-2025-wilfred-leices-a7207.firebaseapp.com",
         databaseURL: "https://comp-2025-wilfred-leices-a7207-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -50,9 +50,8 @@ function fb_initialise() {
         appId: "1:155933616174:web:78589529167648f04f97bf"
     };
 
-    const FB_GAMEAPP = initializeApp(fb_gameConfig);
-    var FB_GAMEDB  = getDatabase(FB_GAMEAPP);
-    console.info(FB_GAMEDB);
+    fb_db = getDatabase(initializeApp(FB_GAMECONFIG));
+    console.info(fb_db);
 }
 
 
@@ -104,10 +103,13 @@ function fb_logout() {
     });
 }
 
-function fb_write() {
-    const REF = ref(fb_gameConfig);
+function fb_write(path, data) {
+    const REF = ref(fb_db, path);
+    console.info(fb_db);
 
-    set(REF, 'hello').then(() => {
+    console.log(REF);
+
+    set(REF, data).then(() => {
         console.log('written successfully!');
     }).catch((error) => {
         console.log('error');
@@ -115,27 +117,38 @@ function fb_write() {
     });
 }
 
-function fb_read() {
-    const REF = ref(fb_gameConfig);
+function fb_read(path) {
+    const REF = ref(fb_db, path);
 
     get(REF).then((snapshot) => {
-
         var fb_data = snapshot.val();
 
         if (fb_data != null) {
-            console.log('read successfully, data:');
             console.log(fb_data);
+            return fb_data;
         } else {
-            console.log('read successfully, no data found');
+            console.log('no data found');
         }
 
     }).catch((error) => {
         console.log('error in reading database');
+        console.log(error);
+    });
+}
+
+function fb_update(path, data) {
+    const REF = ref(fb_db, path);
+
+    update(REF, data).then(() => {
+        console.log('updated successfully');
+    }).catch((error) => {
+        console.log('error');
+        console.log(error);
     });
 }
 
 
-export { fb_initialise, fb_authenticate, fb_authChanged, fb_logout, fb_write, fb_read };
+export { fb_initialise, fb_authenticate, fb_authChanged, fb_logout, fb_write, fb_read, fb_update };
 
 /*************************************************************/
 // END OF CODE
