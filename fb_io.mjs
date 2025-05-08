@@ -26,7 +26,7 @@ import { getDatabase }          from "https://www.gstatic.com/firebasejs/9.6.1/f
 
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-import { set, get, ref, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { set, get, ref, update, query, orderByChild, limitToFirst } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
     
 // fb_initialise()
@@ -147,8 +147,26 @@ function fb_update(path, data) {
     });
 }
 
+function fb_readSorted(path, sortkey, number) {
+    const dbReference = query(ref(fb_db, path), orderByChild(sortkey), limitToFirst(number));
 
-export { fb_initialise, fb_authenticate, fb_authChanged, fb_logout, fb_write, fb_read, fb_update };
+    get(dbReference).then((snapshot) => {
+        var fb_data = snapshot.val();
+
+        if (fb_data != null) {
+            console.log('success!');
+            console.log(fb_data);
+        } else {
+            console.log('no records found');
+        }
+
+    }).catch((error) => {  
+        console.log('error in reading sorted');
+        console.log(error);
+    });
+}
+
+export { fb_initialise, fb_authenticate, fb_authChanged, fb_logout, fb_write, fb_read, fb_update, fb_readSorted };
 
 /*************************************************************/
 // END OF CODE
