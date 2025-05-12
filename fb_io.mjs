@@ -147,21 +147,47 @@ function fb_update(path, data) {
     });
 }
 
+function getLength(table) {
+    var count = 0;
+
+    table.forEach(function() { count += 1; });
+
+    return i;
+}
+
 function fb_readSorted(path, sortkey, number) {
-    const dbReference = query(ref(fb_db, path), orderByChild(sortkey), limitToFirst(number));
+    const dbReference= query(ref(fb_db, path), orderByChild(sortkey), limitToFirst(number));
 
     get(dbReference).then((snapshot) => {
-        var fb_data = snapshot.val();
 
-        if (fb_data != null) {
-            console.log('success!');
-            console.log(fb_data);
-        } else {
-            console.log('no records found');
+        var sortedTable = {};
+        var numToTop = 6;
+
+        const LENGTH = getLength(snapshot.val());
+
+        console.log(snapshot.val());
+
+        for (var i = 0; i < numToTop; i++) {
+            console.log(i);
+            console.log(snapshot.val());
+            console.log(LENGTH);
+            console.log(snapshot.val()[LENGTH - i - 1]);
+
+
+            sortedTable[i] = snapshot.val()[snapshot.val().length - i - 1];
+
         }
 
-    }).catch((error) => {  
-        console.log('error in reading sorted');
+        console.log(sortedTable);
+
+    if (fb_data != null) {
+            console.log('successful read');
+            console.log(fb_data);
+        } else {
+           console.log('no data found');
+        }
+    }).catch((error) => {
+        console.log('error!');
         console.log(error);
     });
 }
