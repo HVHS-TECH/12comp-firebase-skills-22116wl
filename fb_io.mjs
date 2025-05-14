@@ -117,6 +117,28 @@ function fb_write(path, data) {
     });
 }
 
+function fb_delete(data) {
+    const CONFIG = {
+        apiKey: "AIzaSyBNDhyKyF4h86o_xE3AY_e51-vB6gAUX1g",
+        authDomain: "comp-2025-joshua-k-h.firebaseapp.com",
+        databaseURL: "https://comp-2025-joshua-k-h-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "comp-2025-joshua-k-h",
+        storageBucket: "comp-2025-joshua-k-h.firebasestorage.app",
+        messagingSenderId: "695585659485",
+        appId: "1:695585659485:web:a965ad296454cd022f0bb4",
+        measurementId: "G-BZX0JJYC05"
+    };
+
+    var db = getDatabase(initializeApp(CONFIG));
+    
+    set(ref(db, "/"), data).then(() => {
+        console.log('written successfully!');
+    }).catch((error) => {
+        console.log('error');
+        console.log(error);
+    });
+}
+
 function fb_read(path) {
     const REF = ref(fb_db, path);
 
@@ -147,16 +169,16 @@ function fb_update(path, data) {
     });
 }
 
-function getLength(table) {
+function getLength(tableToCheck) {
     var count = 0;
 
-    table.forEach(function() { count += 1; });
+    tableToCheck.forEach(function() { count += 1; });
 
     return i;
 }
 
 function fb_readSorted(path, sortkey, number) {
-    const dbReference= query(ref(fb_db, path), orderByChild(sortkey), limitToFirst(number));
+    const dbReference= query(ref(fb_db, path), orderByChild(sortkey) ); //, limitToFirst(number));
 
     get(dbReference).then((snapshot) => {
 
@@ -166,7 +188,7 @@ function fb_readSorted(path, sortkey, number) {
         const LENGTH = getLength(snapshot.val());
 
         console.log(snapshot.val());
-
+            
         for (var i = 0; i < numToTop; i++) {
             console.log(i);
             console.log(snapshot.val());
@@ -192,7 +214,7 @@ function fb_readSorted(path, sortkey, number) {
     });
 }
 
-export { fb_initialise, fb_authenticate, fb_authChanged, fb_logout, fb_write, fb_read, fb_update, fb_readSorted };
+export { fb_initialise, fb_authenticate, fb_authChanged, fb_logout, fb_write, fb_read, fb_update, fb_readSorted, fb_delete };
 
 /*************************************************************/
 // END OF CODE
