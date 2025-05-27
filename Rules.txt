@@ -1,0 +1,31 @@
+{
+  "rules": {
+    "Products": {
+      ".read": true,
+      ".write": "root.child('admins').hasChild(auth.uid) === true",
+        
+			"Fruits": {
+        ".indexOn": "Price",
+			},
+      
+      "Vegetables": {
+        ".indexOn": "Price",
+			},
+    },
+      
+    "UserData": {
+      ".read":  "root.child('admins').hasChild(auth.uid) === true",
+      ".write": "root.child('admins').hasChild(auth.uid) === true",
+        
+      "$UID": {
+        ".write": "$UID === auth.uid",
+        ".read": "$UID == auth.uid",
+      },
+    },
+    
+    "admins": {
+    	".read":  "root.child('admins').hasChild(auth.uid) === true",
+    	".write": "root.child('admins').hasChild(auth.uid) === true",
+    }
+  }
+}

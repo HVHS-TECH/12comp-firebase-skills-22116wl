@@ -26,7 +26,7 @@ import { getDatabase }          from "https://www.gstatic.com/firebasejs/9.6.1/f
 
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-import { set, get, ref, update, query, orderByChild, limitToFirst } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { set, get, ref, update, query, orderByChild, limitToFirst, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
     
 // fb_initialise()
